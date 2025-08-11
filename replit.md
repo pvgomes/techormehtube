@@ -2,7 +2,7 @@
 
 ## Overview
 
-TechOrMehTube is a full-stack YouTube video and audio downloader web application. The platform allows users to download YouTube content in multiple formats (MP4, WebM, AVI for video; MP3, WAV, M4A for audio) with a 10-minute duration limit. The application prioritizes user privacy by streaming files directly to users without storing content on servers. Built with a modern React frontend and Express.js backend, it features a clean, responsive design with real-time download progress tracking.
+TechOrMehTube is a full-stack YouTube video and audio downloader web application. The platform allows users to download YouTube content in multiple formats (MP4, WebM, AVI for video; MP3, WAV for audio) with a 10-minute duration limit and time range cutting capabilities. The application prioritizes user privacy by streaming files directly to users without storing content on servers. Built with a modern React frontend and Express.js backend, it features a clean, responsive design with comprehensive animated loading states and real-time download progress tracking.
 
 ## User Preferences
 
@@ -29,6 +29,12 @@ Preferred communication style: Simple, everyday language.
 - **Schema Definition**: Centralized schema in `/shared/schema.ts` for download tracking and analytics
 - **In-Memory Storage**: Fallback MemStorage implementation for development and simple deployments
 - **Migration System**: Drizzle Kit for database schema migrations and version control
+
+### Documentation and Setup
+- **README.md**: Comprehensive documentation covering project setup, development, deployment, and contribution guidelines
+- **Local Development**: Simple `npm run dev` command starts both frontend and backend servers
+- **Docker Support**: Containerized deployment with Dockerfile for production environments
+- **API Documentation**: Clear endpoint specifications with request/response examples
 
 ### Authentication and Authorization
 - **Current State**: No authentication system implemented - open access model
