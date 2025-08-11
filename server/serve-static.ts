@@ -4,7 +4,10 @@ import path from "path";
 
 export function serveStatic(app: Express) {
   // Serve static files from the built client
-  const distPath = path.resolve(__dirname, "../dist/public");
+  const distPath = path.resolve(
+    path.dirname(new URL(import.meta.url).pathname),
+    "../dist/public"
+  );
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
