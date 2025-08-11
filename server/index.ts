@@ -63,11 +63,11 @@ app.use((req, res, next) => {
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
     // Dynamically import Vite setup only in development
-    const { setupVite } = await import("./vite");
+    const { setupVite } = await import("./vite-dev.js");
     await setupVite(app, server);
   } else {
     // Dynamically import serveStatic only in production
-    const { serveStatic } = await import("./vite");
+    const { serveStatic } = await import("./serve-static.js");
     serveStatic(app);
   }
 
