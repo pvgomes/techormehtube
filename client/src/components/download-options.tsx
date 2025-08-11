@@ -85,7 +85,8 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
   const audioOptions: DownloadOption[] = [
     { format: 'mp3', quality: '320', label: 'MP3 - 320kbps', description: 'High quality audio', type: 'audio' },
     { format: 'mp3', quality: '192', label: 'MP3 - 192kbps', description: 'Good quality, smaller size', type: 'audio' },
-    { format: 'm4a', quality: '256', label: 'M4A - 256kbps', description: 'Apple compatible format', type: 'audio' },
+    { format: 'mp3', quality: '128', label: 'MP3 - 128kbps', description: 'Standard quality, small file', type: 'audio' },
+    { format: 'wav', quality: 'lossless', label: 'WAV - Lossless', description: 'Uncompressed, largest file', type: 'audio' },
   ];
 
   return (

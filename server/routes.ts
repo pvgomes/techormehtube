@@ -142,7 +142,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const ffmpegCommand = ffmpeg(inputStream)
           .seekInput(startTime)
           .duration(endTime - startTime)
-          .format(format)
           .on('error', (error) => {
             console.error('FFmpeg error:', error);
             if (!res.headersSent) {
@@ -154,10 +153,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
 
         // Set output format based on request
-        if (['mp3', 'wav', 'm4a'].includes(format)) {
-          ffmpegCommand.audioCodec('libmp3lame').noVideo();
+        if (format === 'mp3') {
+          ffmpegCommand.audioCodec('libmp3lame').noVideo().format('mp3');
+        } else if (format === 'wav') {
+          ffmpegCommand.audioCodec('pcm_s16le').noVideo().format('wav');
+
+        } else if (format === 'webm') {
+          ffmpegCommand.videoCodec('libvpx').audioCodec('libvorbis').format('webm');
+        } else if (format === 'avi') {
+          ffmpegCommand.videoCodec('libx264').audioCodec('aac').format('avi');
         } else {
-          ffmpegCommand.videoCodec('libx264').audioCodec('aac');
+          // Default mp4
+          ffmpegCommand.videoCodec('libx264').audioCodec('aac').format('mp4');
         }
 
         ffmpegCommand.pipe(res);

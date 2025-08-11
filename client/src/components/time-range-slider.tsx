@@ -23,7 +23,7 @@ export default function TimeRangeSlider({ videoDuration, onTimeRangeChange, isEn
     } else {
       onTimeRangeChange(0, videoDuration);
     }
-  }, [timeRange, useTimeRange, videoDuration, onTimeRangeChange]);
+  }, [timeRange, useTimeRange, videoDuration]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
