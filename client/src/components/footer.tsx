@@ -82,7 +82,7 @@ export default function Footer() {
         
         <div className="border-t border-gray-100 mt-8 pt-8 text-center">
           <p className="text-gray-500 text-sm" data-testid="footer-copyright">
-            © 2024 TechOrMehTube • Built with ❤️ for the community
+            © {new Date().getFullYear()} TechOrMehTube • Built with ❤️ for the community
           </p>
         </div>
       </div>
