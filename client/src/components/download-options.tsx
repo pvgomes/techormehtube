@@ -123,11 +123,20 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
                   <Button
                     onClick={() => handleDownload(option.format, option.quality)}
                     disabled={downloadMutation.isPending}
-                    className="bg-primary text-white hover:bg-red-600 text-sm"
+                    className="bg-primary text-white hover:bg-red-600 text-sm relative overflow-hidden"
                     data-testid={`button-download-${option.format}-${option.quality}`}
                   >
-                    <Download size={14} className="mr-1" />
-                    Download
+                    {downloadMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        <span className="animate-pulse">Processing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download size={14} className="mr-1" />
+                        Download
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>
@@ -157,11 +166,20 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
                   <Button
                     onClick={() => handleDownload(option.format, option.quality)}
                     disabled={downloadMutation.isPending}
-                    className="bg-secondary text-white hover:bg-teal-600 text-sm"
+                    className="bg-secondary text-white hover:bg-teal-600 text-sm relative overflow-hidden"
                     data-testid={`button-download-${option.format}-${option.quality}`}
                   >
-                    <Download size={14} className="mr-1" />
-                    Download
+                    {downloadMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        <span className="animate-pulse">Processing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download size={14} className="mr-1" />
+                        Download
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>
