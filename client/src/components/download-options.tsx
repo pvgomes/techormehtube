@@ -4,6 +4,7 @@ import { Video, Music, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import TimeRangeSlider from "@/components/time-range-slider";
 import type { VideoInfo, DownloadOption } from "@/types/youtube";
 
 interface DownloadOptionsProps {
@@ -14,10 +15,23 @@ interface DownloadOptionsProps {
 
 export default function DownloadOptions({ videoInfo, url, onDownloadStart }: DownloadOptionsProps) {
   const { toast } = useToast();
+  const [timeRange, setTimeRange] = useState<{ startTime: number; endTime: number }>({
+    startTime: 0,
+    endTime: parseInt(videoInfo.duration)
+  });
 
   const downloadMutation = useMutation({
     mutationFn: async ({ format, quality }: { format: string; quality: string }) => {
-      const response = await apiRequest("POST", "/api/download", { url, format, quality });
+      const downloadData: any = { url, format, quality };
+      
+      // Add time range if it's different from full duration
+      const fullDuration = parseInt(videoInfo.duration);
+      if (timeRange.startTime !== 0 || timeRange.endTime !== fullDuration) {
+        downloadData.startTime = timeRange.startTime;
+        downloadData.endTime = timeRange.endTime;
+      }
+      
+      const response = await apiRequest("POST", "/api/download", downloadData);
       return response;
     },
     onSuccess: async (response, { format, quality }) => {
@@ -58,6 +72,10 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
     downloadMutation.mutate({ format, quality });
   };
 
+  const handleTimeRangeChange = (startTime: number, endTime: number) => {
+    setTimeRange({ startTime, endTime });
+  };
+
   const videoOptions: DownloadOption[] = [
     { format: 'mp4', quality: '1080p', label: 'MP4 - 1080p', description: 'Best quality, larger file size', type: 'video' },
     { format: 'mp4', quality: '720p', label: 'MP4 - 720p', description: 'Good quality, balanced size', type: 'video' },
@@ -71,8 +89,15 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-8" data-testid="download-options">
-      <h3 className="text-lg font-semibold text-dark mb-6">Download Options</h3>
+    <div className="space-y-6">
+      <TimeRangeSlider
+        videoDuration={parseInt(videoInfo.duration)}
+        onTimeRangeChange={handleTimeRangeChange}
+        isEnabled={true}
+      />
+      
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8" data-testid="download-options">
+        <h3 className="text-lg font-semibold text-dark mb-6">Download Options</h3>
       
       <div className="grid md:grid-cols-2 gap-8">
         {/* Video Download Options */}
@@ -142,6 +167,7 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
             ))}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

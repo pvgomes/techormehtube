@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { youtubeUrlSchema, downloadRequestSchema } from "@shared/schema";
 import ytdl from '@distube/ytdl-core';
 import { PassThrough } from 'stream';
+import ffmpeg from 'fluent-ffmpeg';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get video information from YouTube URL
@@ -74,7 +75,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Stream download endpoint
   app.post("/api/download", async (req, res) => {
     try {
-      const { url, format, quality } = downloadRequestSchema.parse(req.body);
+      const { url, format, quality, startTime, endTime } = downloadRequestSchema.parse(req.body);
       
       if (!ytdl.validateURL(url)) {
         return res.status(400).json({ message: "Invalid YouTube URL" });
@@ -116,13 +117,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Set appropriate headers for download
-      const filename = `${videoDetails.title.replace(/[^a-z0-9]/gi, '_')}.${selectedFormat.container}`;
+      const timeRange = startTime !== undefined && endTime !== undefined ? `_${startTime}s-${endTime}s` : '';
+      const filename = `${videoDetails.title.replace(/[^a-z0-9]/gi, '_')}${timeRange}.${format}`;
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
       res.setHeader('Content-Type', selectedFormat.mimeType || 'application/octet-stream');
-      
-      if (selectedFormat.contentLength) {
-        res.setHeader('Content-Length', selectedFormat.contentLength);
-      }
 
       // Log download (optional)
       try {
@@ -137,17 +135,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.warn('Failed to log download:', logError);
       }
 
-      // Stream the video directly to the response
-      const stream = ytdl(url, { format: selectedFormat });
-      
-      stream.on('error', (error) => {
-        console.error('Stream error:', error);
-        if (!res.headersSent) {
-          res.status(500).json({ message: 'Download failed' });
-        }
-      });
+      // If time range is specified, use ffmpeg for trimming
+      if (startTime !== undefined && endTime !== undefined) {
+        const inputStream = ytdl(url, { format: selectedFormat });
+        
+        const ffmpegCommand = ffmpeg(inputStream)
+          .seekInput(startTime)
+          .duration(endTime - startTime)
+          .format(format)
+          .on('error', (error) => {
+            console.error('FFmpeg error:', error);
+            if (!res.headersSent) {
+              res.status(500).json({ message: 'Trimming failed' });
+            }
+          })
+          .on('end', () => {
+            console.log('FFmpeg processing finished');
+          });
 
-      stream.pipe(res);
+        // Set output format based on request
+        if (['mp3', 'wav', 'm4a'].includes(format)) {
+          ffmpegCommand.audioCodec('libmp3lame').noVideo();
+        } else {
+          ffmpegCommand.videoCodec('libx264').audioCodec('aac');
+        }
+
+        ffmpegCommand.pipe(res);
+      } else {
+        // Stream the video directly without trimming
+        const stream = ytdl(url, { format: selectedFormat });
+        
+        stream.on('error', (error) => {
+          console.error('Stream error:', error);
+          if (!res.headersSent) {
+            res.status(500).json({ message: 'Download failed' });
+          }
+        });
+
+        stream.pipe(res);
+      }
 
     } catch (error: any) {
       console.error('Download error:', error);

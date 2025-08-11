@@ -40,6 +40,8 @@ export const downloadRequestSchema = z.object({
   url: z.string().url(),
   format: z.enum(['mp4', 'webm', 'avi', 'mp3', 'wav', 'm4a']),
   quality: z.string(),
+  startTime: z.number().min(0).optional(),
+  endTime: z.number().min(0).optional(),
 });
 
 export type YoutubeUrl = z.infer<typeof youtubeUrlSchema>;
