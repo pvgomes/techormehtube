@@ -1,3 +1,4 @@
+
 # Use Node.js 20 LTS Alpine for smaller image size
 FROM node:20-alpine
 
@@ -14,8 +15,8 @@ RUN apk add --no-cache \
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev) for build
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -23,12 +24,15 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Expose port (Railway and Digital Ocean will set this)
-EXPOSE 5000
+# Remove dev dependencies for production
+RUN npm prune --production
 
-# Health check
+# Expose port (Railway will set this)
+EXPOSE 3000
+
+# Health check (update port to 3000)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5000/api/stats || exit 1
+  CMD curl -f http://localhost:3000/api/stats || exit 1
 
 # Start the application
 CMD ["npm", "start"]
