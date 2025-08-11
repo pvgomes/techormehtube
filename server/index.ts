@@ -1,6 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { serveStatic, log } from "./vite";
+
+// Local log function to avoid importing from vite.ts (which imports Vite)
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 // Vite will only be imported in development
 
 const app = express();
@@ -56,6 +66,8 @@ app.use((req, res, next) => {
     const { setupVite } = await import("./vite");
     await setupVite(app, server);
   } else {
+    // Dynamically import serveStatic only in production
+    const { serveStatic } = await import("./vite");
     serveStatic(app);
   }
 
