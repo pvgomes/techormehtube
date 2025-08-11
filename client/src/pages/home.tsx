@@ -16,8 +16,9 @@ export default function Home() {
   const [downloadInProgress, setDownloadInProgress] = useState(false);
   const [downloadDetails, setDownloadDetails] = useState<{ format: string; quality: string } | null>(null);
 
-  const handleVideoInfo = (info: VideoInfo) => {
+  const handleVideoInfo = (info: VideoInfo, url: string) => {
     setVideoInfo(info);
+    setCurrentUrl(url);
   };
 
   const handleDownloadStart = (format: string, quality: string) => {

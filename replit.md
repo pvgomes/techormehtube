@@ -20,8 +20,8 @@ Preferred communication style: Simple, everyday language.
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript for RESTful API development
-- **YouTube Integration**: ytdl-core library for extracting video information and streaming downloads
-- **File Streaming**: PassThrough streams for direct file delivery without server storage
+- **YouTube Integration**: @distube/ytdl-core library for reliable video information extraction and streaming downloads
+- **File Streaming**: Direct streaming to client without server storage, supporting video (MP4, WebM, AVI) and audio (MP3, M4A, WebM) formats
 - **Development Setup**: Integrated with Vite for seamless full-stack development
 
 ### Data Storage Solutions
@@ -59,7 +59,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Core Dependencies
 - **@neondatabase/serverless**: Neon PostgreSQL serverless database driver for production deployments
-- **ytdl-core**: YouTube video information extraction and download streaming
+- **@distube/ytdl-core**: Reliable YouTube video information extraction and download streaming
 - **drizzle-orm**: Type-safe PostgreSQL ORM for database operations
 - **@tanstack/react-query**: Server state management and caching for React
 
@@ -86,3 +86,32 @@ Preferred communication style: Simple, everyday language.
 - **Analytics**: PostHog, Google Analytics, or custom tracking
 - **CDN**: Cloudflare or AWS CloudFront for global content delivery
 - **Monitoring**: Sentry for error tracking and performance monitoring
+
+## Deployment Options
+
+The application is ready for deployment on multiple platforms:
+
+### Railway (Recommended for Quick Deployment)
+- Automatic deployment from GitHub repository
+- Zero-configuration setup with auto-detected Node.js environment
+- Built-in HTTPS and custom domain support
+- Usage-based pricing model
+
+### Digital Ocean App Platform
+- Managed hosting with predictable pricing
+- Automatic scaling and load balancing
+- Built-in monitoring and logging
+- Custom domain and SSL certificate management
+
+### Digital Ocean Droplets (Docker)
+- Full server control with Docker containerization
+- Cost-effective for high-traffic applications
+- Custom Nginx configuration for advanced routing
+- Manual server management required
+
+### Production Considerations
+- 10-minute video duration limit prevents server abuse
+- No file storage reduces infrastructure requirements
+- Streaming architecture supports concurrent downloads
+- Health check endpoint (`/api/stats`) for monitoring uptime
+- Docker configuration included for containerized deployment

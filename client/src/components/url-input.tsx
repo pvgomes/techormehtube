@@ -8,7 +8,7 @@ import { apiRequest } from "@/lib/queryClient";
 import type { VideoInfo } from "@/types/youtube";
 
 interface UrlInputProps {
-  onVideoInfo: (info: VideoInfo) => void;
+  onVideoInfo: (info: VideoInfo, url: string) => void;
   isLoading: boolean;
 }
 
@@ -22,7 +22,7 @@ export default function UrlInput({ onVideoInfo, isLoading }: UrlInputProps) {
       return response.json();
     },
     onSuccess: (data: VideoInfo) => {
-      onVideoInfo(data);
+      onVideoInfo(data, url);
       toast({
         title: "Video information loaded",
         description: "You can now select download options below.",

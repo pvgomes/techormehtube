@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { youtubeUrlSchema, downloadRequestSchema } from "@shared/schema";
-import ytdl from 'ytdl-core';
+import ytdl from '@distube/ytdl-core';
 import { PassThrough } from 'stream';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -54,7 +54,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         videoId: videoDetails.videoId,
         title: videoDetails.title,
-        description: videoDetails.shortDescription,
+        description: videoDetails.description,
         duration: videoDetails.lengthSeconds,
         views: videoDetails.viewCount,
         channel: videoDetails.author.name,
@@ -99,7 +99,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Video download
         selectedFormat = ytdl.chooseFormat(formats, { 
           quality: quality || 'highest',
-          filter: format => format.hasVideo && format.hasAudio && format.container === format
+          filter: f => f.hasVideo && f.hasAudio && f.container === format
         });
       } else {
         // Audio download

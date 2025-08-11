@@ -20,25 +20,29 @@ export default function DownloadOptions({ videoInfo, url, onDownloadStart }: Dow
       const response = await apiRequest("POST", "/api/download", { url, format, quality });
       return response;
     },
-    onSuccess: (response, { format, quality }) => {
+    onSuccess: async (response, { format, quality }) => {
       onDownloadStart(format, quality);
       
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Download failed");
+      }
+      
       // Create blob URL and trigger download
-      response.blob().then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `${videoInfo.title.replace(/[^a-z0-9]/gi, '_')}.${format}`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        
-        toast({
-          title: "Download started",
-          description: "Your file is being downloaded.",
-        });
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = downloadUrl;
+      a.download = `${videoInfo.title.replace(/[^a-z0-9\s]/gi, '_')}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(downloadUrl);
+      document.body.removeChild(a);
+      
+      toast({
+        title: "Download started",
+        description: "Your file is being downloaded.",
       });
     },
     onError: (error: any) => {

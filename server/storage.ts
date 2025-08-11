@@ -19,7 +19,8 @@ export class MemStorage implements IStorage {
     const download: Download = { 
       ...insertDownload, 
       id,
-      downloadedAt: new Date()
+      downloadedAt: new Date(),
+      userIp: insertDownload.userIp || null
     };
     this.downloads.set(id, download);
     return download;
