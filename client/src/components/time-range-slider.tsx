@@ -60,7 +60,7 @@ export default function TimeRangeSlider({ videoDuration, onTimeRangeChange, isEn
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <Clock className="text-primary" size={20} />
-          <h4 className="font-semibold text-dark">Trim Video/Audio</h4>
+          <h4 className="font-semibold text-dark">Cut Video/Audio</h4>
         </div>
         <div className="flex items-center space-x-2">
           <Button

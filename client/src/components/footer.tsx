@@ -1,5 +1,5 @@
 import { Play } from "lucide-react";
-import { FaTwitter, FaFacebook, FaGithub } from "react-icons/fa";
+import { FaTwitter, FaGithub, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
   const featureLinks = [
@@ -33,14 +33,14 @@ export default function Footer() {
               Fast, secure, and free YouTube video and audio downloader. Download your favorite content in multiple formats without storing files on our servers.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-twitter">
+              <a href="https://x.com/_pvgomes" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-twitter">
                 <FaTwitter size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-facebook">
-                <FaFacebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-github">
+              <a href="https://github.com/pvgomes" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-github">
                 <FaGithub size={20} />
+              </a>
+              <a href="https://www.youtube.com/@tech-or-meh" className="text-gray-400 hover:text-primary transition-colors" data-testid="social-youtube">
+                <FaYoutube size={20} />
               </a>
             </div>
           </div>
@@ -82,7 +82,7 @@ export default function Footer() {
         
         <div className="border-t border-gray-100 mt-8 pt-8 text-center">
           <p className="text-gray-500 text-sm" data-testid="footer-copyright">
-            © 2024 TechOrMehTube. All rights reserved. • Built with ❤️ for the community
+            © 2024 TechOrMehTube • Built with ❤️ for the community
           </p>
         </div>
       </div>
