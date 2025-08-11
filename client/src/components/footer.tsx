@@ -9,17 +9,12 @@ export default function Footer() {
     { name: 'Mobile Support', href: '#' },
   ];
 
-  const supportLinks = [
-    { name: 'Help Center', href: '#' },
-    { name: 'Contact Us', href: '#' },
-    { name: 'Privacy Policy', href: '#' },
-    { name: 'Terms of Service', href: '#' },
-  ];
+
 
   return (
     <footer className="bg-white border-t border-gray-100 mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -62,22 +57,7 @@ export default function Footer() {
             </ul>
           </div>
           
-          <div>
-            <h5 className="font-semibold text-dark mb-3">Support</h5>
-            <ul className="space-y-2 text-sm">
-              {supportLinks.map((link) => (
-                <li key={link.name}>
-                  <a 
-                    href={link.href} 
-                    className="text-gray-600 hover:text-primary transition-colors"
-                    data-testid={`footer-link-${link.name.toLowerCase().replace(' ', '-')}`}
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+
         </div>
         
         <div className="border-t border-gray-100 mt-8 pt-8 text-center">
