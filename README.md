@@ -54,17 +54,28 @@ That's it! The app will be running locally with both frontend and backend servic
 ├── client/                 # React frontend
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
+│   │   ├── services/      # API service layer
+│   │   ├── utils/         # Utility functions
+│   │   ├── constants/     # App constants and configurations
 │   │   ├── pages/         # Page components
 │   │   ├── hooks/         # Custom React hooks
-│   │   ├── lib/           # Utilities and configurations
+│   │   ├── lib/           # Core utilities and configurations
 │   │   └── types/         # TypeScript type definitions
 ├── server/                # Express.js backend
-│   ├── index.ts          # Server entry point
-│   ├── routes.ts         # API route definitions
-│   └── storage.ts        # Data storage interface
-├── shared/               # Shared types and schemas
-│   └── schema.ts        # Database and validation schemas
-└── README.md            # Project documentation
+│   ├── controllers/       # Request handlers
+│   ├── services/          # Business logic layer
+│   ├── utils/             # Server utilities
+│   ├── middleware/        # Express middleware
+│   ├── config/            # Configuration files
+│   ├── routes/            # API route definitions
+│   └── storage.ts         # Data storage interface
+├── shared/                # Shared types and schemas
+│   └── schema.ts          # Database and validation schemas
+├── tests/                 # Comprehensive test suite
+│   ├── server/            # Server-side tests
+│   ├── client/            # Client-side tests
+│   └── shared/            # Shared code tests
+└── README.md              # Project documentation
 ```
 
 ### Technology Stack
@@ -102,6 +113,18 @@ npm run db:push
 
 # Generate database migrations
 npm run db:generate
+
+# Run unit tests
+npm test
+
+# Run tests in watch mode (for development)
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run tests for CI/CD (no watch, with coverage)
+npm run test:ci
 ```
 
 ### Environment Variables
@@ -199,19 +222,68 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 - **Rate Limiting**: Built-in protection against excessive requests
 - **CORS Security**: Properly configured cross-origin request handling
 
+## 🧪 Testing
+
+### Running Tests
+
+The project includes comprehensive unit tests for both server and client code:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode (recommended for development)
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+
+# Run tests for CI/CD
+npm run test:ci
+```
+
+### Test Structure
+
+- **Server Tests** (`tests/server/`): API endpoints, services, utilities, and middleware
+- **Client Tests** (`tests/client/`): React components, utilities, and services  
+- **Shared Tests** (`tests/shared/`): Validation schemas and shared utilities
+
+### Coverage Goals
+
+- **Server Code**: 90%+ coverage for critical paths (YouTube service, download logic)
+- **Client Code**: 80%+ coverage for utilities and services
+- **Shared Code**: 95%+ coverage for validation schemas
+
+### Test Examples
+
+```bash
+# Test specific file
+npm test -- youtube.test.ts
+
+# Test with verbose output
+npm test -- --verbose
+
+# Test in watch mode with coverage
+npm run test:watch -- --coverage
+```
+
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these guidelines:
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+3. Write tests for new functionality
+4. Ensure all tests pass: `npm test`
+5. Commit your changes: `git commit -m 'Add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
 
 ### Development Guidelines
 
 - Follow TypeScript best practices
+- Write comprehensive unit tests for new features
+- Maintain test coverage above 80%
 - Use the existing ESLint/Prettier configuration
 - Write meaningful commit messages
 - Test your changes across different devices

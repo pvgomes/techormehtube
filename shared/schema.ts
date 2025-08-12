@@ -3,6 +3,37 @@ import { pgTable, text, varchar, integer, timestamp } from "drizzle-orm/pg-core"
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// YouTube API types
+export interface VideoFormat {
+  itag: number;
+  container: string;
+  quality: string;
+  qualityLabel?: string;
+  hasAudio: boolean;
+  hasVideo: boolean;
+}
+
+export interface AudioFormat {
+  itag: number;
+  container: string;
+  quality: string;
+  audioBitrate?: number;
+  audioQuality?: string;
+  contentLength?: string;
+}
+
+export interface VideoInfo {
+  videoId: string;
+  title: string;
+  description?: string;
+  duration: string;
+  views?: string;
+  channel?: string;
+  thumbnail?: string;
+  videoFormats: VideoFormat[];
+  audioFormats: AudioFormat[];
+}
+
 // For potential future use - download history or analytics
 export const downloads = pgTable("downloads", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
